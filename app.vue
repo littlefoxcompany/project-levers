@@ -1,9 +1,8 @@
 <template>
   <main
-    class="relative flex min-h-screen flex-col justify-center bg-sky-50 bg-gradient-to-br from-sky-100 to-white text-slate-800 dark:from-zinc-800 dark:to-zinc-900 dark:text-white">
+    class="relative flex min-h-screen flex-col justify-center bg-gradient-to-r from-sky-50 to-sky-50/50 text-slate-800 dark:from-zinc-900 dark:to-zinc-800 dark:text-white">
     <div class="spacer py-8"></div>
-
-    <div class="container relative mx-auto flex grow flex-col justify-center px-4 py-12">
+    <div class="relatve container relative z-10 mx-auto flex grow flex-col justify-center px-4 py-12">
       <div>
         <div class="relative flex gap-6 max-md:flex-col md:items-end">
           <h1 class="mt-2 text-5xl font-bold leading-[1.2em] md:text-6xl">Project Levers.</h1>
@@ -31,7 +30,7 @@
         </p>
       </div>
       <!-- Levers -->
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 xl:grid-cols-3 xl:gap-8 2xl:gap-10">
+      <div class="relatve z-10 mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 xl:grid-cols-3 xl:gap-8 2xl:gap-10">
         <!-- Card -->
         <div
           v-for="(lever, index) in levers"
@@ -39,7 +38,7 @@
           <div class="text-2xl font-bold">{{ lever.title }}</div>
           <p class="mt-2 text-2xl font-light text-zinc-500 dark:text-zinc-400">{{ lever.description }}</p>
 
-          <div class="mt-5 flex gap-0.5 rounded-full bg-sky-100/75 p-1 dark:bg-zinc-800 xl:w-10/12">
+          <div class="mt-8 flex gap-0.5 rounded-full bg-sky-100/50 p-1 dark:bg-zinc-900/75 xl:w-10/12">
             <ButtonInput
               v-for="(button, index) in lever.buttons"
               :label="button"
@@ -50,7 +49,7 @@
       </div>
     </div>
 
-    <footer class="flex items-center justify-center gap-6 py-12 text-center">
+    <footer class="relatve z-10 flex items-center justify-center gap-6 py-12 text-center">
       <a
         class="group inline-flex items-center text-gray-400 transition-all hover:text-indigo-600"
         href="https://littlefox.studio"
@@ -176,13 +175,13 @@
 
   const projectOutcome = computed(() => {
     if (projectScore.value && scope.value > budget.value) {
-      return 'High Risk'
+      return 'High Risk Project'
     } else if (projectScore.value < 0) {
       return 'High Risk'
     } else if (projectScore.value === 0) {
-      return 'Accepatable Risk'
+      return 'Average Risk Project'
     } else if (projectScore.value > 0) {
-      return 'Balanced'
+      return 'Balanced Project'
     } else {
       return 'Calculating...'
     }
