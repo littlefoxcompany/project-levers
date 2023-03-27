@@ -1,22 +1,25 @@
 <template>
-  <main class="relative flex min-h-screen flex-col justify-center text-slate-800">
+  <main
+    class="relative flex min-h-screen flex-col justify-center bg-sky-50 text-slate-800 dark:bg-zinc-900 dark:text-white">
     <div class="spacer py-8"></div>
 
     <div class="container relative mx-auto flex grow flex-col justify-center px-4 py-12">
       <div>
-        <div class="text-lg font-medium text-indigo-600">Faster or Further?</div>
+        <div class="text-lg font-medium text-indigo-600 dark:text-amber-400">Faster or Further?</div>
         <h2 class="mt-2 text-5xl font-semibold leading-[1.2em] md:text-6xl lg:text-7xl">Project Levers.</h2>
-        <p class="mt-4 text-2xl font-light text-sky-800 lg:text-3xl">
+        <p class="mt-4 text-2xl font-light text-sky-800 dark:text-zinc-400 lg:text-3xl">
           Faster, bigger and cheaper? We'll guide you through the balance.
         </p>
       </div>
       <!-- Levers -->
       <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 xl:gap-8 2xl:gap-10">
-        <div v-for="(lever, index) in levers" class="shadow-brand rounded-2xl bg-white p-8">
+        <div
+          v-for="(lever, index) in levers"
+          class="rounded-2xl bg-white p-8 shadow-xl shadow-indigo-600/20 dark:bg-zinc-800 dark:shadow-black/30">
           <div class="text-2xl font-bold">{{ lever.title }}</div>
-          <p class="mt-2 text-2xl font-light text-slate-500">{{ lever.description }}</p>
+          <p class="mt-2 text-2xl font-light text-zinc-500 dark:text-zinc-400">{{ lever.description }}</p>
 
-          <div class="mt-5 flex w-10/12 gap-0.5 rounded-full bg-gradient-to-r from-sky-100/75 to-sky-50/75 p-1">
+          <div class="mt-5 flex w-10/12 gap-0.5 rounded-full bg-sky-100/75 p-1 dark:bg-zinc-900">
             <ButtonInput
               v-for="(button, index) in lever.buttons"
               :label="button"
@@ -36,7 +39,7 @@
       </div>
     </transition>
 
-    <footer class="py-12 text-center">
+    <footer class="flex items-center justify-center gap-3 py-12 text-center">
       <a
         class="group inline-flex items-center text-gray-400 transition-all hover:text-indigo-600"
         href="https://littlefox.studio"
@@ -45,6 +48,14 @@
         <Logo class="h-5 fill-gray-400 transition-all group-hover:fill-indigo-600" />
         Littlefox Studio
       </a>
+
+      <select
+        v-model="$colorMode.preference"
+        class="flex appearance-none rounded-full border px-2 py-1 text-center dark:border-zinc-700 dark:bg-zinc-800">
+        <option value="system">🧑‍💻</option>
+        <option value="light">🌞</option>
+        <option value="dark">🌙</option>
+      </select>
     </footer>
   </main>
 </template>
@@ -117,9 +128,6 @@
     } else if (id === 'resources') {
       resources.value = value + 1
       budget.value = resources.value
-    } else if (id === 'stress') {
-      stress.value = value + 1
-      speed.value = stress.value
     }
 
     //
