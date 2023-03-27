@@ -1,25 +1,45 @@
 <template>
   <main
-    class="relative flex min-h-screen flex-col justify-center bg-sky-50 text-slate-800 dark:bg-zinc-900 dark:text-white">
+    class="relative flex min-h-screen flex-col justify-center bg-sky-50 bg-gradient-to-br from-sky-100 to-white text-slate-800 dark:from-zinc-800 dark:to-zinc-900 dark:text-white">
     <div class="spacer py-8"></div>
 
     <div class="container relative mx-auto flex grow flex-col justify-center px-4 py-12">
       <div>
-        <div class="text-lg font-medium text-indigo-600 dark:text-amber-400">Faster or Further?</div>
-        <h2 class="mt-2 text-5xl font-semibold leading-[1.2em] md:text-6xl lg:text-7xl">Project Levers.</h2>
+        <div class="relative flex gap-6 max-md:flex-col md:items-end">
+          <h1 class="mt-2 text-5xl font-bold leading-[1.2em] md:text-6xl">Project Levers.</h1>
+          <transition name="fade">
+            <div
+              v-show="projectOutcome != 'Calculating...'"
+              class="inline-flex w-fit items-center gap-4 rounded-full py-2 pl-6 pr-2 text-white shadow-2xl dark:shadow-black/50"
+              :class="{
+                'bg-indigo-500': projectScore > 0,
+                'bg-emerald-600': projectScore === 0,
+                'bg-red-500': projectScore < 0
+              }">
+              <p class="text-lg font-medium">{{ projectOutcome }}</p>
+              <button
+                class="flex h-9 items-center rounded-full border px-4 dark:border-white/50 dark:text-white"
+                @click="clear">
+                Clear
+              </button>
+            </div>
+          </transition>
+        </div>
+
         <p class="mt-4 text-2xl font-light text-sky-800 dark:text-zinc-400 lg:text-3xl">
-          Faster, bigger and cheaper? We'll guide you through the balance.
+          Further or faster? A guide through the balance.
         </p>
       </div>
       <!-- Levers -->
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 xl:gap-8 2xl:gap-10">
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 xl:grid-cols-3 xl:gap-8 2xl:gap-10">
+        <!-- Card -->
         <div
           v-for="(lever, index) in levers"
-          class="rounded-2xl bg-white p-8 shadow-xl shadow-indigo-600/20 dark:bg-zinc-800 dark:shadow-black/30">
+          class="rounded-2xl bg-white p-8 shadow-xl shadow-indigo-600/10 dark:bg-zinc-700 dark:shadow-black/20">
           <div class="text-2xl font-bold">{{ lever.title }}</div>
           <p class="mt-2 text-2xl font-light text-zinc-500 dark:text-zinc-400">{{ lever.description }}</p>
 
-          <div class="mt-5 flex w-10/12 gap-0.5 rounded-full bg-sky-100/75 p-1 dark:bg-zinc-900">
+          <div class="mt-5 flex gap-0.5 rounded-full bg-sky-100/75 p-1 dark:bg-zinc-800 xl:w-10/12">
             <ButtonInput
               v-for="(button, index) in lever.buttons"
               :label="button"
@@ -30,16 +50,7 @@
       </div>
     </div>
 
-    <transition name="fade">
-      <div
-        v-show="projectOutcome != 'Calculating...'"
-        class="shadow-brand absolute left-1/2 bottom-32 mt-4 inline-flex -translate-x-1/2 items-center gap-4 rounded-full bg-white py-2 pl-6 pr-2">
-        <p class="text-lg font-medium">{{ projectOutcome }}</p>
-        <button class="flex h-10 items-center rounded-full border px-4" @click="clear">Clear</button>
-      </div>
-    </transition>
-
-    <footer class="flex items-center justify-center gap-3 py-12 text-center">
+    <footer class="flex items-center justify-center gap-6 py-12 text-center">
       <a
         class="group inline-flex items-center text-gray-400 transition-all hover:text-indigo-600"
         href="https://littlefox.studio"
@@ -51,7 +62,7 @@
 
       <select
         v-model="$colorMode.preference"
-        class="flex appearance-none rounded-full border px-2 py-1 text-center dark:border-zinc-700 dark:bg-zinc-800">
+        class="flex appearance-none rounded-full border px-2 py-1 text-center outline-none ring-0 focus:ring-0 dark:border-zinc-700 dark:bg-zinc-800">
         <option value="system">🧑‍💻</option>
         <option value="light">🌞</option>
         <option value="dark">🌙</option>
@@ -73,7 +84,7 @@
       id: 'scope',
       value: scope,
       title: 'Scope',
-      description: 'The size, industry or complexity of the project.',
+      description: 'The number, size and complexity of tasks within the project.',
       buttons: ['Small', 'Medium', 'Large']
     },
     {
@@ -91,26 +102,25 @@
       buttons: ['Slower', 'Medium', 'Faster']
     },
     {
+      id: 'resources',
+      value: resources,
+      title: 'Resources',
+      description: 'The number of internal and external skills available.',
+      buttons: ['Less', 'Normal', 'More']
+    },
+    {
       id: 'quality',
       value: quality,
       title: 'Quality',
       description: 'The confidence the solution will withstand all demands.',
       buttons: ['Lower', 'Medium', 'Higher']
     },
-
-    {
-      id: 'resources',
-      value: resources,
-      title: 'Resources',
-      description: 'The number of people and skills available.',
-      buttons: ['Less', 'Normal', 'More']
-    },
     {
       id: 'stress',
       value: stress,
       title: 'Stress',
       description: 'The stress and pressure levels within the team and project.',
-      buttons: ['Low', 'Medium', 'High']
+      buttons: ['Lower', 'Medium', 'Higher']
     }
   ])
 
@@ -119,7 +129,6 @@
       scope.value = value + 1
     } else if (id === 'budget') {
       budget.value = value + 1
-      resources.value = value + 1
     } else if (id === 'speed') {
       speed.value = value + 1
       stress.value = speed.value
@@ -127,12 +136,11 @@
       quality.value = value + 1
     } else if (id === 'resources') {
       resources.value = value + 1
-      budget.value = resources.value
     }
 
     //
 
-    if (budget.value) {
+    if (scope.value && budget.value && speed.value) {
       if (scope.value > budget.value) {
         quality.value = 1
         stress.value = 3
@@ -168,11 +176,13 @@
 
   const projectOutcome = computed(() => {
     if (projectScore.value && scope.value > budget.value) {
-      return 'High Risk Project'
-    } else if (projectScore.value < 0 || projectScore.value === 0) {
-      return 'High Risk Project'
+      return 'High Risk'
+    } else if (projectScore.value < 0) {
+      return 'High Risk'
+    } else if (projectScore.value === 0) {
+      return 'Accepatable Risk'
     } else if (projectScore.value > 0) {
-      return 'Healthy Project'
+      return 'Balanced'
     } else {
       return 'Calculating...'
     }

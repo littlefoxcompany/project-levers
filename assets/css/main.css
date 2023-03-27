@@ -1,7 +1,22 @@
-@import url(https://fonts.bunny.net/css?family=inter-tight:300,400,500,600,700);
+@import url(https://fonts.bunny.net/css?family=inter-tight:200,400,500,600,700);
 
 .font-sans {
   font-family: 'Inter Tight', sans-serif;
+}
+
+.container {
+  @apply mx-auto w-full max-w-screen-2xl;
+  padding-left: calc(env(safe-area-inset-left, 0rem) + 1.15rem);
+  padding-right: calc(env(safe-area-inset-right, 0rem) + 1.15rem);
+
+  @media screen(md) {
+    padding-left: calc(env(safe-area-inset-left, 0rem) + 2rem);
+    padding-right: calc(env(safe-area-inset-right, 0rem) + 2rem);
+  }
+  @media screen(lg) {
+    padding-left: calc(env(safe-area-inset-left, 0rem) + 4rem);
+    padding-right: calc(env(safe-area-inset-right, 0rem) + 4rem);
+  }
 }
 
 .shadow-brand {

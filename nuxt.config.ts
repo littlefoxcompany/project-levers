@@ -6,7 +6,8 @@ export default defineNuxtConfig({
   },
   tailwindcss: {
     config: {
-      darkMode: 'class'
+      darkMode: 'class',
+      container: false
     }
   }
 })
