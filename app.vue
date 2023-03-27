@@ -11,7 +11,7 @@
         </p>
       </div>
       <!-- Levers -->
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 xl:gap-8 2xl:gap-10">
         <div v-for="(lever, index) in levers" class="shadow-brand rounded-2xl bg-white p-8">
           <div class="text-2xl font-bold">{{ lever.title }}</div>
           <p class="mt-2 text-2xl font-light text-slate-500">{{ lever.description }}</p>
@@ -55,7 +55,7 @@
   const speed = ref(null)
   const quality = ref(null)
   const resources = ref(null)
-  const wellness = ref(null)
+  const stress = ref(null)
 
   const levers = ref([
     {
@@ -92,11 +92,11 @@
       value: resources,
       title: 'Resources',
       description: 'The number of people and skills available.',
-      buttons: ['Small', 'Medium', 'Large']
+      buttons: ['Less', 'Normal', 'More']
     },
     {
-      id: 'wellness',
-      value: wellness,
+      id: 'stress',
+      value: stress,
       title: 'Stress',
       description: 'The stress and pressure levels within the team and project.',
       buttons: ['Low', 'Medium', 'High']
@@ -111,13 +111,15 @@
       resources.value = value + 1
     } else if (id === 'speed') {
       speed.value = value + 1
-      wellness.value = speed.value
+      stress.value = speed.value
     } else if (id === 'quality') {
       quality.value = value + 1
     } else if (id === 'resources') {
       resources.value = value + 1
-    } else if (id === 'wellness') {
-      wellness.value = value + 1
+      budget.value = resources.value
+    } else if (id === 'stress') {
+      stress.value = value + 1
+      speed.value = stress.value
     }
 
     //
@@ -125,9 +127,18 @@
     if (budget.value) {
       if (scope.value > budget.value) {
         quality.value = 1
-        wellness.value = 3
+        stress.value = 3
       } else if (scope.value <= budget.value) {
         quality.value = budget.value
+        stress.value = speed.value
+      }
+
+      if (scope.value === 1 && speed.value === 3) {
+        stress.value = 2
+      }
+
+      if (speed.value === 3) {
+        quality.value = 2
       }
     }
   }
@@ -139,11 +150,11 @@
       speed.value === null ||
       quality.value === null ||
       resources.value === null ||
-      wellness.value === null
+      stress.value === null
     ) {
       return null
     } else {
-      return quality.value + budget.value + resources.value - scope.value - speed.value - wellness.value
+      return quality.value + budget.value + resources.value - scope.value - speed.value - stress.value
     }
   })
 
@@ -165,7 +176,7 @@
     speed.value = null
     quality.value = null
     resources.value = null
-    wellness.value = null
+    stress.value = null
   }
 </script>
 
