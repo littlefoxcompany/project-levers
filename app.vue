@@ -203,8 +203,10 @@
       return '👻 High Risk Project'
     } else if (projectScore.value < 0) {
       return '😅  Medium Risk Project'
-    } else if (projectScore.value > 0 || projectScore.value === 0) {
-      return '🎉 Balanced Project'
+    } else if (projectScore.value === 0) {
+      return '🤞 Low Risk Project'
+    } else if (projectScore.value > 0) {
+      return '🎉 High Success Project'
     } else {
       return 'Calculating...'
     }
