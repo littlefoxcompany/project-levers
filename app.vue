@@ -19,7 +19,7 @@
               'bg-red-400': projectScore < 0,
               'pr-2': edited
             }">
-            <p class="text-lg font-medium">{{ projectOutcome }}</p>
+            <p class="text-lg">{{ projectOutcome }}</p>
             <button
               v-if="edited === true"
               class="flex h-9 items-center rounded-full border border-white/50 px-4 hover:border-white dark:text-white"
@@ -39,7 +39,7 @@
         <!-- Card -->
         <div
           v-for="(lever, index) in levers"
-          class="rounded-2xl bg-white p-8 shadow-2xl shadow-indigo-600/30 dark:bg-zinc-700/60 dark:shadow-black/20">
+          class="rounded-2xl bg-gradient-to-br from-white/50 to-white/75 p-8 shadow-2xl shadow-indigo-600/30 backdrop-blur dark:from-zinc-700/75 dark:to-zinc-700/50 dark:shadow-black/20">
           <h2 class="flex w-full items-center gap-2">
             <span class="text-2xl font-bold">
               {{ lever.title }}
@@ -200,11 +200,11 @@
 
   const projectOutcome = computed(() => {
     if (projectScore.value && scope.value > budget.value) {
-      return '🫣  High Risk Project'
+      return '👻 High Risk Project'
     } else if (projectScore.value < 0) {
       return '😅  Medium Risk Project'
     } else if (projectScore.value > 0 || projectScore.value === 0) {
-      return '🎉  Balanced Project'
+      return '🎉 Balanced Project'
     } else {
       return 'Calculating...'
     }
@@ -220,14 +220,3 @@
     edited.value = false
   }
 </script>
-
-<style scoped>
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-</style>
