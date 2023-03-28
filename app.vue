@@ -1,28 +1,32 @@
 <template>
   <main
     class="relative flex min-h-screen flex-col justify-center bg-gradient-to-r from-sky-50 to-sky-50/50 text-slate-800 dark:from-zinc-900 dark:to-zinc-800 dark:text-white">
+    <div
+      class="background absolute inset-0 z-0 bg-[url('./images/mesh-light.svg')] bg-cover bg-right-top bg-no-repeat dark:bg-[url('./images/mesh-dark.svg')]" />
+
     <div class="spacer py-8"></div>
-    <div class="relatve container relative z-10 mx-auto flex grow flex-col justify-center px-4 py-12">
+    <div class="relatve container relative z-20 mx-auto flex grow flex-col justify-center px-4 py-4 md:py-12">
       <div>
-        <div class="relative flex gap-6 max-md:flex-col md:items-end">
+        <div class="relative flex gap-5 max-md:flex-col md:items-end">
           <h1 class="mt-2 text-5xl font-bold leading-[1.2em] md:text-6xl">Project Levers.</h1>
-          <transition name="fade">
-            <div
-              v-show="projectOutcome != 'Calculating...'"
-              class="inline-flex w-fit items-center gap-4 rounded-full py-2 pl-6 pr-2 text-white shadow-2xl dark:shadow-black/50"
-              :class="{
-                'bg-indigo-500': projectScore > 0,
-                'bg-emerald-600': projectScore === 0,
-                'bg-red-500': projectScore < 0
-              }">
-              <p class="text-lg font-medium">{{ projectOutcome }}</p>
-              <button
-                class="flex h-9 items-center rounded-full border px-4 dark:border-white/50 dark:text-white"
-                @click="clear">
-                Clear
-              </button>
-            </div>
-          </transition>
+
+          <div
+            v-show="projectOutcome != 'Calculating...'"
+            class="z-20 inline-flex h-12 w-fit items-center gap-4 rounded-full py-2 px-6 text-white shadow-2xl dark:shadow-black/50 max-md:fixed max-md:bottom-8 max-md:left-1/2 max-md:-translate-x-1/2"
+            :class="{
+              'bg-indigo-500': projectScore > 0,
+              'bg-emerald-500': projectScore === 0,
+              'bg-red-400': projectScore < 0,
+              'pr-2': edited
+            }">
+            <p class="text-lg font-medium">{{ projectOutcome }}</p>
+            <button
+              v-if="edited === true"
+              class="flex h-9 items-center rounded-full border border-white/50 px-4 hover:border-white dark:text-white"
+              @click="clear">
+              Clear
+            </button>
+          </div>
         </div>
 
         <p class="mt-4 text-2xl font-light text-sky-800 dark:text-zinc-400 lg:text-3xl">
@@ -30,17 +34,30 @@
         </p>
       </div>
       <!-- Levers -->
-      <div class="relatve z-10 mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 xl:grid-cols-3 xl:gap-8 2xl:gap-10">
+      <div
+        class="relatve group z-10 mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-16 lg:gap-7 xl:grid-cols-3 xl:gap-8 2xl:gap-10">
         <!-- Card -->
         <div
           v-for="(lever, index) in levers"
-          class="rounded-2xl bg-white p-8 shadow-xl shadow-indigo-600/10 dark:bg-zinc-700 dark:shadow-black/20">
-          <div class="text-2xl font-bold">{{ lever.title }}</div>
-          <p class="mt-2 text-2xl font-light text-zinc-500 dark:text-zinc-400">{{ lever.description }}</p>
+          class="rounded-2xl bg-white p-8 shadow-2xl shadow-indigo-600/30 dark:bg-zinc-700/60 dark:shadow-black/20">
+          <h2 class="flex w-full items-center gap-2">
+            <span class="text-2xl font-bold">
+              {{ lever.title }}
+            </span>
+            <span
+              v-if="lever.id === 'quality' || lever.id === 'stress'"
+              class="inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-sky-800 dark:bg-black/25 dark:text-zinc-300">
+              <span>Outcome Only</span>
+            </span>
+          </h2>
+          <p class="mt-3 text-2xl font-light text-zinc-500 dark:text-zinc-400">
+            {{ lever.description }}
+          </p>
 
-          <div class="mt-8 flex gap-0.5 rounded-full bg-sky-100/50 p-1 dark:bg-zinc-900/75 xl:w-10/12">
+          <div class="mt-9 flex gap-0.5 rounded-full bg-sky-100/50 p-1 dark:bg-zinc-900/50">
             <ButtonInput
               v-for="(button, index) in lever.buttons"
+              :hover="lever.id === 'quality' || lever.id === 'stress'"
               :label="button"
               @click="updateValue(lever.id, index)"
               :active="lever.value === index + 1" />
@@ -71,19 +88,20 @@
 </template>
 
 <script setup>
-  const scope = ref(null)
-  const budget = ref(null)
-  const speed = ref(null)
-  const quality = ref(null)
-  const resources = ref(null)
-  const stress = ref(null)
+  const scope = ref(1)
+  const budget = ref(1)
+  const speed = ref(1)
+  const quality = ref(1)
+  const resources = ref(1)
+  const stress = ref(1)
+  const edited = ref(false)
 
   const levers = ref([
     {
       id: 'scope',
       value: scope,
       title: 'Scope',
-      description: 'The number, size and complexity of tasks within the project.',
+      description: 'The amount, size and complexity of the tasks.',
       buttons: ['Small', 'Medium', 'Large']
     },
     {
@@ -98,43 +116,50 @@
       value: speed,
       title: 'Speed',
       description: 'The amount of time available to complete milestones.',
-      buttons: ['Slower', 'Medium', 'Faster']
+      buttons: ['Slow', 'Average', 'Fast']
     },
     {
       id: 'resources',
       value: resources,
       title: 'Resources',
-      description: 'The number of internal and external skills available.',
-      buttons: ['Less', 'Normal', 'More']
+      description: 'The number of people and skills available to the project.',
+      buttons: ['Few', 'Average', 'Many']
     },
     {
       id: 'quality',
       value: quality,
       title: 'Quality',
       description: 'The confidence the solution will withstand all demands.',
-      buttons: ['Lower', 'Medium', 'Higher']
+      buttons: ['Low', 'Medium', 'High']
     },
     {
       id: 'stress',
       value: stress,
       title: 'Stress',
       description: 'The stress and pressure levels within the team and project.',
-      buttons: ['Lower', 'Medium', 'Higher']
+      buttons: ['Low 😁', 'Medium', 'High 😡']
     }
   ])
 
   const updateValue = (id, value) => {
     if (id === 'scope') {
       scope.value = value + 1
+      edited.value = true
     } else if (id === 'budget') {
       budget.value = value + 1
+      edited.value = true
     } else if (id === 'speed') {
       speed.value = value + 1
-      stress.value = speed.value
-    } else if (id === 'quality') {
-      quality.value = value + 1
+      edited.value = true
     } else if (id === 'resources') {
       resources.value = value + 1
+      edited.value = true
+    } else if (id === 'quality') {
+      quality.value = value + 1
+      edited.value = true
+    } else if (id === 'stress') {
+      stress.value = value + 1
+      edited.value = true
     }
 
     //
@@ -152,7 +177,7 @@
         stress.value = 2
       }
 
-      if (speed.value === 3) {
+      if (speed.value === 3 && quality.value === 3) {
         quality.value = 2
       }
     }
@@ -175,25 +200,24 @@
 
   const projectOutcome = computed(() => {
     if (projectScore.value && scope.value > budget.value) {
-      return 'High Risk Project'
+      return '🫣  High Risk Project'
     } else if (projectScore.value < 0) {
-      return 'High Risk'
-    } else if (projectScore.value === 0) {
-      return 'Average Risk Project'
-    } else if (projectScore.value > 0) {
-      return 'Balanced Project'
+      return '😅  Medium Risk Project'
+    } else if (projectScore.value > 0 || projectScore.value === 0) {
+      return '🎉  Balanced Project'
     } else {
       return 'Calculating...'
     }
   })
 
   const clear = () => {
-    scope.value = null
-    budget.value = null
-    speed.value = null
-    quality.value = null
-    resources.value = null
-    stress.value = null
+    scope.value = 1
+    budget.value = 1
+    speed.value = 1
+    quality.value = 1
+    resources.value = 1
+    stress.value = 1
+    edited.value = false
   }
 </script>
 
