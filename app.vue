@@ -2,7 +2,7 @@
   <main
     class="relative flex min-h-screen flex-col justify-center bg-gradient-to-r from-sky-50 to-sky-50/50 text-slate-800 dark:from-zinc-900 dark:to-zinc-800 dark:text-white">
     <div
-      class="background absolute inset-0 z-0 bg-[url('images/mesh-light.svg')] bg-cover bg-right-top bg-no-repeat dark:bg-[url('images/mesh-dark.svg')]" />
+      class="background absolute inset-0 z-0 bg-[url('/images/mesh-light.svg')] bg-cover bg-right-top bg-no-repeat dark:bg-[url('/images/mesh-dark.svg')]" />
 
     <div class="spacer py-8"></div>
     <div class="relatve container relative z-20 mx-auto flex grow flex-col justify-center px-4 py-4 md:py-12">
