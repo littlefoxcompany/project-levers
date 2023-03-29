@@ -92,7 +92,7 @@
   const budget = ref(1)
   const speed = ref(1)
   const quality = ref(1)
-  const resources = ref(1)
+  const people = ref(1)
   const stress = ref(1)
   const edited = ref(false)
 
@@ -108,7 +108,7 @@
       id: 'budget',
       value: budget,
       title: 'Budget',
-      description: 'The budget for costs like resources, time and quality.',
+      description: 'The budget for costs like teams, time and quality.',
       buttons: ['$', '$$', '$$$']
     },
     {
@@ -119,11 +119,11 @@
       buttons: ['Slow', 'Average', 'Fast']
     },
     {
-      id: 'resources',
-      value: resources,
-      title: 'Resources',
-      description: 'The number of people and skills available to the project.',
-      buttons: ['Few', 'Average', 'Many']
+      id: 'people',
+      value: people,
+      title: 'Teams',
+      description: 'The team size and skills available to the project.',
+      buttons: ['Small', 'Regular', 'Large']
     },
     {
       id: 'quality',
@@ -151,8 +151,8 @@
     } else if (id === 'speed') {
       speed.value = value + 1
       edited.value = true
-    } else if (id === 'resources') {
-      resources.value = value + 1
+    } else if (id === 'people') {
+      people.value = value + 1
       edited.value = true
     } else if (id === 'quality') {
       quality.value = value + 1
@@ -189,12 +189,12 @@
       budget.value === null ||
       speed.value === null ||
       quality.value === null ||
-      resources.value === null ||
+      people.value === null ||
       stress.value === null
     ) {
       return null
     } else {
-      return quality.value + budget.value + resources.value - scope.value - speed.value - stress.value
+      return quality.value + budget.value + people.value - scope.value - speed.value - stress.value
     }
   })
 
@@ -217,7 +217,7 @@
     budget.value = 1
     speed.value = 1
     quality.value = 1
-    resources.value = 1
+    people.value = 1
     stress.value = 1
     edited.value = false
   }
