@@ -121,15 +121,15 @@
     {
       id: 'people',
       value: people,
-      title: 'Teams',
-      description: 'The team size and skills available to the project.',
-      buttons: ['Small', 'Regular', 'Large']
+      title: 'Capability',
+      description: 'The team size, skill-level and attention on the project.',
+      buttons: ['Low', 'Medium', 'High']
     },
     {
       id: 'quality',
       value: quality,
       title: 'Quality',
-      description: 'The confidence the solution will withstand all demands.',
+      description: 'The discipline for testing and best-practice on the project.',
       buttons: ['Low', 'Medium', 'High']
     },
     {
@@ -179,6 +179,10 @@
 
       if (speed.value === 3 && quality.value === 3) {
         quality.value = 2
+      }
+      // ensure the quality can never be higher than capability
+      if (quality.value > people.value) {
+        quality.value = people.value
       }
     }
   }
