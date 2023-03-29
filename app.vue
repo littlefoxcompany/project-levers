@@ -24,7 +24,7 @@
               v-if="edited === true"
               class="flex h-9 items-center rounded-full border border-white/50 px-4 hover:border-white dark:text-white"
               @click="clear">
-              Clear
+              Reset
             </button>
           </div>
         </div>
@@ -129,7 +129,7 @@
       id: 'quality',
       value: quality,
       title: 'Quality',
-      description: 'The discipline for testing and best-practice on the project.',
+      description: 'The attention to detail and best-practice on the project.',
       buttons: ['Low', 'Medium', 'High']
     },
     {
@@ -179,10 +179,6 @@
 
       if (speed.value === 3 && quality.value === 3) {
         quality.value = 2
-      }
-      // ensure the quality can never be higher than capability
-      if (quality.value > people.value) {
-        quality.value = people.value
       }
     }
   }
